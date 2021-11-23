@@ -1,0 +1,4 @@
+# Ignore non-sample versions of repo *.sh/*.py scripts
+check-ddns.sh
+update-ddns.py
+
