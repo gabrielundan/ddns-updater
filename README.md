@@ -14,6 +14,9 @@ cp ddns-updater-sample.sh ddns-updater.sh
 # update vars HOSTNAME, GD_USER, GD_PASS
 vim ddns-updater.sh
 
+# Make script runnable
+chmod +x ddns-updater.sh
+
 # Add to crontab
 crontab -e 
 # OR
