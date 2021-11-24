@@ -1,10 +1,10 @@
 # ddns-updater
 
 ## Overview
-This script was created to automatically update an IP on Google Domain DDNS if a change is detected.
+This script was created to automatically update an IP on Google Domain DDNS if a change is detected. Only works for IPv4.
 The intent is to `cron` `ddns-updater.sh`, which checks if the DNS record of a host matches the current
 machine's public facing IP address. If there is a mismatch, a HTTP GET request is placed
-onto `https://domains.google.com/nic/update`, updating the DDNS record.
+onto `https://domains.google.com/nic/update`, updating the DDNS record. The script will exit if the current machine's IP address matches the DNS record.
 
 ## Directions
 ```bash
@@ -19,7 +19,7 @@ crontab -e
 # OR
 sudo vim /etc/crontab
 ```
-
+### Sample crontab configuration
 ```bash
 # Sample crontab entries for every 6th hour at the top of the hour (hh:00)
 
