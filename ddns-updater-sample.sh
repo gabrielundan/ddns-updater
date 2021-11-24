@@ -1,6 +1,6 @@
 #!/bin/bash
-# Script that checks DNS record and compares with with current public IP. Only works for IPv4.
-# If the two differ, update Google Domain DDNS
+# Script that checks DNS record of a hostname and compares it with current machine's public IP.
+# If the two differ, update Google Domain DDNS. Exits if records match. Only works for IPv4
 # Author: Gabriel Undan (https://github.com/gabrielundan)
 
 ### CONSTANTS ###
@@ -18,9 +18,6 @@ USER_AGENT='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko
 # URI to curl if update is necessary
 URI="https://${GD_USER}:${GD_PASS}@domains.google.com/nic/update?hostname=${HOSTNAME}"
 
-curlResult=`curl --silent --write-out '%{http_code}' --output /dev/null -H "User-Agent: ${USER_AGENT}" "${URI}"`
-echo "${curlResult}"
-exit 0
 ### CONSTANTS END ###
 
 ### SCRIPT ###
@@ -59,6 +56,7 @@ else
 			exit 0
 		else
 			echo "FAILURE: Unable to update DDNS record. Check credentials and hostname"
+			exit 1
 		fi
 	fi
 fi
