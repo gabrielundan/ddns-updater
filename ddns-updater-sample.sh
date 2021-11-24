@@ -33,32 +33,35 @@ if [[ -z $nslookupResult ]]; then
 	# $nslookupResult is empty; no IPv4 record found
 	echo "No DNS record found"
 	exit 1
-else
-	# $nslookupResult is non-empty; IPv4 record found
-	echo "IPv4 address found, checking public IP"
-
-	# Get actual public IP
-	publicIp=`curl -s ifconfig.me`
-
-	# Check if DNS record and public IP match
-	if [[ $nslookupResult == $publicIp ]]; then
-		echo "DNS record MATCHES public IP, update unnecessary"
-		exit 0
-	else
-		echo "DNS record DOES NOT MATCH public IP, updating record"
-
-		# Attempt to update DNS record
-		curlResult=`curl -s -w '%{http_code}' -o /dev/null -H "User-Agent: ${USER_AGENT}" "${URI}"`
-
-		# Check if HTTP 200
-		if [[ $curlResult == 200 ]]; then
-			echo "SUCCESS: DDNS Record updated"
-			exit 0
-		else
-			echo "FAILURE: Unable to update DDNS record. Check credentials and hostname"
-			exit 1
-		fi
-	fi
 fi
+
+# $nslookupResult is non-empty; IPv4 record found
+echo "IPv4 address found, checking public IP"
+
+# Get actual public IP
+publicIp=`curl -s ifconfig.me`
+
+# Check if DNS record and public IP match
+if [[ $nslookupResult == $publicIp ]]; then
+	echo "DNS record MATCHES public IP, update unnecessary"
+	exit 0
+fi
+
+echo "DNS record DOES NOT MATCH public IP, updating record"
+
+# Attempt to update DNS record
+curlResult=`curl -s -w '%{http_code}' -o /dev/null -H "User-Agent: ${USER_AGENT}" "${URI}"`
+
+# Check if HTTP 200
+if [[ $curlResult == 200 ]]; then
+	# HTTP 200 signifies record was updated successfully or there was no update needed
+	echo "SUCCESS: DDNS Record updated"
+	exit 0
+fi
+
+# curl did not return HTTP 200. Likely that HOSTNAME, GD_USER or GD_PASS was invalid
+# See https://support.google.com/domains/answer/6147083 for more details
+echo "FAILURE: Unable to update DDNS record. Check credentials and hostname"
+exit 1
 
 ### SCRIPT END ###
