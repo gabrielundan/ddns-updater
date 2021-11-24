@@ -26,12 +26,11 @@ URI="https://${GD_USER}:${GD_PASS}@domains.google.com/nic/update?hostname=${HOST
 #  sed		remove first 3 lines (DNS server info)
 #  grep		get first IPv4 address
 nslookupResult=`nslookup $HOSTNAME | sed '1,3d' | grep -m 1 -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"`
-echo "ns:${nslookupResult}"
 
 # Check if nslookupResult is empty
 if [[ -z $nslookupResult ]]; then
 	# $nslookupResult is empty; no IPv4 record found
-	echo "No DNS record found"
+	echo "No DNS record found for domain '${HOSTNAME}'"
 	exit 1
 fi
 
@@ -43,11 +42,11 @@ publicIp=`curl -s ifconfig.me`
 
 # Check if DNS record and public IP match
 if [[ $nslookupResult == $publicIp ]]; then
-	echo "DNS record MATCHES public IP, update unnecessary"
+	echo "DNS record MATCHES public IP; exiting"
 	exit 0
 fi
 
-echo "DNS record DOES NOT MATCH public IP, updating record"
+echo "DNS record DOES NOT MATCH public IP; updating record"
 
 # Attempt to update DNS record
 curlResult=`curl -s -w '%{http_code}' -o /dev/null -H "User-Agent: ${USER_AGENT}" "${URI}"`
