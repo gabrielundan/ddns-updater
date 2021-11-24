@@ -6,11 +6,11 @@
 ### CONSTANTS ###
 
 # Record to nslookup to see if it is accurate
-HOSTNAME='<hostname>'
+HOSTNAME='<hostname>' # EDIT THIS VALUE
 
 # Google Domain auto-generated DDNS credentials for updating record
-GD_USER='<google domain username>'
-GD_PASS='<google domain password>'
+GD_USER='<google domain username>' # EDIT THIS VALUE
+GD_PASS='<google domain password>' # EDIT THIS VALUE
 
 # domains.google.com requires a user-agent to be set as per https://support.google.com/domains/answer/6147083
 USER_AGENT='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0'

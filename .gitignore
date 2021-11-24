@@ -1,4 +1,3 @@
-# Ignore non-sample versions of repo *.sh/*.py scripts
-check-ddns.sh
-update-ddns.py
+# Ignore non-sample versions of script containing HOSTNAME and Google Domain creds
+ddns-updater.sh
 
